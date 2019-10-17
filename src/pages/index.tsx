@@ -2,15 +2,17 @@ import React, { useState } from "react"
 import roller from "../helpers/random"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import History from "../components/History"
+import { HistoryItem } from "../types"
 
 const IndexPage = () => {
+  const [history, setHistory] = useState<HistoryItem[]>([])
   const [sides, setSides] = useState(20)
   const [count, setCount] = useState(1)
-  const [res, setRes] = useState<number[]>([])
 
   const rollIt = () => {
     const dieArray = roller(sides, count)
-    setRes(dieArray)
+    setHistory(history.concat({ sides, rolls: dieArray }))
   }
   return (
     <Layout>
@@ -36,12 +38,7 @@ const IndexPage = () => {
         </span>
       </p>
       <button onClick={rollIt}>Roll It!</button>
-      {res.length > 0 ? (
-        <div>
-          <h1>Results</h1>
-          <h2>{res.join(", ")}</h2>
-        </div>
-      ) : null}
+      <History history={history} />
     </Layout>
   )
 }
